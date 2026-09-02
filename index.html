@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BANK MOBILE — ร้านโทรศัพท์ออนไลน์</title>
+<link rel="icon" type="image/png" href="OHM.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     🎨 1) ตั้งค่าสี
+     ============================================================ */
+  :root{
+    --bg:#FBF7FF;
+    --surface:#FFFFFF;
+    --ink:#1A1035;
+    --ink-soft:#6B637F;
+    --pink:#FF4D8D;
+    --violet:#7C5CFF;
+    --mint:#1FCFA8;
+    --yellow:#FFC24B;
+    --line:#EAE3FA;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Prompt',sans-serif;margin:0;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:30;
+    background:rgba(251,247,255,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .nav{display:flex;align-items:center;gap:14px;}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;white-space:nowrap;}
+  .logo .dot{
+    width:12px;height:12px;border-radius:50%;
+    background:conic-gradient(from 180deg,var(--pink),var(--violet),var(--mint),var(--pink));
+  }
+  .logo span{color:var(--violet);}
+  #searchInput{
+    flex:1;max-width:320px;padding:10px 16px;border-radius:999px;
+    border:1px solid var(--line);font-family:inherit;font-size:14px;outline:none;
+    background:#fff;
+  }
+  .cart-btn{
+    margin-left:auto;position:relative;
+    background:var(--ink);color:#fff;border:none;border-radius:999px;
+    padding:10px 18px;font-weight:600;font-size:14px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    transition:transform .15s ease;
+  }
+  .cart-btn:hover{transform:translateY(-1px);}
+  #cartCount{
+    background:var(--pink);border-radius:999px;padding:1px 8px;font-size:12px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:52px 0 34px;text-align:center;
+  }
+  .hero-blob{
+    position:absolute;border-radius:50%;filter:blur(6px);opacity:.5;z-index:0;
+  }
+  .hero-blob.b1{width:220px;height:220px;background:radial-gradient(circle,var(--pink),transparent 70%);top:-70px;left:6%;}
+  .hero-blob.b2{width:180px;height:180px;background:radial-gradient(circle,var(--violet),transparent 70%);top:-40px;right:8%;}
+  .hero-blob.b3{width:150px;height:150px;background:radial-gradient(circle,var(--mint),transparent 70%);bottom:-60px;left:38%;}
+  .hero-inner{position:relative;z-index:1;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);
+    padding:6px 14px;border-radius:999px;
+    font-size:12.5px;font-weight:600;color:var(--violet);
+    margin-bottom:16px;
+  }
+  .eyebrow .pulse{
+    width:7px;height:7px;border-radius:50%;background:var(--mint);
+    box-shadow:0 0 0 0 rgba(31,207,168,.6);animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(31,207,168,.5);}
+    70%{box-shadow:0 0 0 9px rgba(31,207,168,0);}
+    100%{box-shadow:0 0 0 0 rgba(31,207,168,0);}
+  }
+  .hero h1{font-size:clamp(26px,5vw,38px);line-height:1.15;margin-bottom:10px;}
+  .hero h1 span{
+    background:linear-gradient(100deg,var(--pink),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{color:var(--ink-soft);font-size:15px;max-width:420px;margin:0 auto;}
+
+  /* ---------- Category chips ---------- */
+  .cats{
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+    margin:22px 0 30px;
+  }
+  .chip{
+    padding:9px 18px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-soft);
+    cursor:pointer;transition:all .15s ease;
+  }
+  .chip:hover{border-color:var(--violet);color:var(--violet);}
+  .chip.active{
+    background:var(--ink);color:#fff;border-color:var(--ink);
+    box-shadow:0 8px 16px -8px rgba(26,16,53,.5);
+  }
+
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .section-head h2{font-size:19px;font-weight:800;}
+  .section-head span{font-size:13px;color:var(--ink-soft);}
+
+  /* ---------- แท็บสลับหน้า "โทรศัพท์" / "อุปกรณ์เสริม" ---------- */
+  .view-tabs{
+    display:flex;justify-content:center;gap:10px;margin:0 0 22px;
+  }
+  .view-tab{
+    padding:11px 22px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;font-family:'Prompt',sans-serif;font-weight:700;font-size:14.5px;
+    color:var(--ink-soft);cursor:pointer;transition:all .15s ease;
+    display:flex;align-items:center;gap:6px;
+  }
+  .view-tab:hover{border-color:var(--violet);color:var(--violet);}
+  .view-tab.active{
+    background:linear-gradient(100deg,var(--pink),var(--violet));
+    color:#fff;border-color:transparent;
+    box-shadow:0 10px 20px -10px rgba(124,92,255,.6);
+  }
+
+  /* ---------- 2) รายการสินค้าแบบเรียงลงมา (List) ---------- */
+  .grid{
+    display:flex;flex-direction:column;gap:14px;margin-bottom:30px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:14px;
+    display:flex;align-items:center;gap:16px;
+    position:relative;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    cursor:pointer;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 34px -20px rgba(26,16,53,.28);
+    border-color:#DED2FF;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;
+    border-radius:4px;
+    background:linear-gradient(180deg,var(--pink),var(--violet));
+    opacity:0;transition:opacity .18s ease;
+  }
+  .card:hover::before{opacity:1;}
+
+  .card-media{
+    position:relative;flex:none;
+    width:96px;height:96px;border-radius:16px;overflow:hidden;
+    background:linear-gradient(160deg,#F1ECFF,#FDECF3);
+  }
+  .card-media img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .card .tag{
+    position:absolute;top:6px;left:6px;
+    background:var(--pink);color:#fff;
+    font-size:9.5px;font-weight:700;padding:3px 7px;border-radius:999px;
+    box-shadow:0 3px 8px -2px rgba(255,77,141,.6);
+  }
+
+  .card-body{flex:1;min-width:0;}
+  .card-body .brand{
+    font-size:10.5px;font-weight:700;color:var(--violet);
+    text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;
+  }
+  .card-body h3{
+    font-size:15px;font-weight:700;line-height:1.3;
+    margin-bottom:4px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .card-body .specs{
+    font-size:12px;color:var(--ink-soft);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+
+  .card-side{
+    flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  }
+  .price-now{font-family:'Prompt';font-weight:800;font-size:17px;white-space:nowrap;}
+  .price-old{
+    display:block;font-size:11.5px;color:var(--ink-soft);
+    text-decoration:line-through;text-align:right;
+  }
+  .add-btn{
+    background:var(--ink);color:#fff;border:none;border-radius:12px;
+    width:38px;height:38px;font-size:19px;cursor:pointer;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .add-btn:hover{background:var(--violet);transform:scale(1.06);}
+
+  .empty{text-align:center;padding:60px 10px;color:var(--ink-soft);}
+
+  /* ---------- Pagination ---------- */
+  .pagination{
+    display:flex;justify-content:center;align-items:center;
+    gap:6px;flex-wrap:wrap;margin-bottom:56px;
+  }
+  .page-btn{
+    min-width:36px;height:36px;padding:0 10px;
+    border:1px solid var(--line);background:#fff;border-radius:10px;
+    font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .page-btn:hover{border-color:var(--violet);color:var(--violet);}
+  .page-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .page-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* ---------- Trust strip ---------- */
+  .trust{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:50px;
+  }
+  .trust-item{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:16px;display:flex;gap:10px;align-items:center;
+  }
+  .trust-item .ic{
+    width:38px;height:38px;border-radius:10px;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:17px;
+  }
+  .trust-item:nth-child(1) .ic{background:#FFE1EC;}
+  .trust-item:nth-child(2) .ic{background:#E7E1FF;}
+  .trust-item:nth-child(3) .ic{background:#DAF9F0;}
+  .trust-item:nth-child(4) .ic{background:#FFF1D6;}
+  .trust-item b{display:block;font-size:13px;}
+  .trust-item p{margin:2px 0 0;font-size:11.5px;color:var(--ink-soft);}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;}
+  footer p{color:var(--ink-soft);font-size:12.5px;}
+
+  /* ---------- Cart drawer ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(26,16,53,.4);
+    opacity:0;pointer-events:none;transition:.25s;z-index:50;
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:380px;max-width:90vw;
+    background:#fff;z-index:60;transform:translateX(100%);transition:.3s;
+    display:flex;flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+  .drawer-head h3{font-size:17px;font-weight:800;}
+  .drawer-head button{background:var(--bg);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px;}
+  .drawer-body{flex:1;overflow-y:auto;padding:12px 20px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .cart-item img{width:52px;height:52px;object-fit:cover;border-radius:10px;}
+  .cart-item-info{flex:1;font-size:13px;}
+  .cart-item-info div{font-weight:600;margin-bottom:2px;}
+  .qty-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .qty-row button{width:24px;height:24px;border:1px solid var(--line);background:var(--bg);border-radius:7px;cursor:pointer;}
+  .remove{margin-left:auto;color:var(--pink);font-size:12px;background:none;border:none;cursor:pointer;font-weight:600;}
+  .drawer-foot{padding:18px 20px;border-top:1px solid var(--line);}
+  .total-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:15px;}
+  .total-row b{font-family:'Prompt';font-size:19px;}
+  .checkout-btn{
+    width:100%;padding:14px;border:none;border-radius:14px;background:var(--ink);
+    color:#fff;font-weight:700;cursor:pointer;font-size:15px;
+  }
+  .checkout-btn:hover{background:var(--violet);}
+  .cart-empty{text-align:center;padding:60px 10px;color:var(--ink-soft);font-size:14px;}
+  .cart-empty div{font-size:38px;margin-bottom:8px;}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:13px 22px;border-radius:999px;
+    font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:80;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ---------- Product Detail Modal ---------- */
+  .detail-overlay{
+    position:fixed;inset:0;background:rgba(26,16,53,.55);
+    opacity:0;pointer-events:none;transition:.25s;z-index:70;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .detail-overlay.show{opacity:1;pointer-events:auto;}
+  .detail-panel{
+    background:#fff;width:100%;max-width:520px;max-height:92vh;
+    border-radius:24px 24px 0 0;overflow-y:auto;
+    transform:translateY(30px);transition:.3s;
+  }
+  .detail-overlay.show .detail-panel{transform:translateY(0);}
+  .detail-head{
+    position:sticky;top:0;background:#fff;z-index:2;
+    display:flex;justify-content:flex-end;padding:14px 14px 0;
+  }
+  .detail-close{
+    background:var(--bg);border:none;border-radius:50%;
+    width:34px;height:34px;font-size:15px;cursor:pointer;
+  }
+  .detail-gallery-main{
+    width:100%;height:280px;border-radius:18px;overflow:hidden;
+    background:linear-gradient(160deg,#F1ECFF,#FDECF3);
+    margin-top:-6px;
+  }
+  .detail-gallery-main img{width:100%;height:100%;object-fit:cover;display:block;}
+  .detail-thumbs{
+    display:flex;gap:8px;padding:12px 20px 0;overflow-x:auto;
+  }
+  .detail-thumbs img{
+    width:56px;height:56px;object-fit:cover;border-radius:10px;flex:none;
+    cursor:pointer;border:2px solid transparent;opacity:.7;transition:.15s;
+  }
+  .detail-thumbs img.active{border-color:var(--violet);opacity:1;}
+  .detail-info{padding:18px 20px 24px;}
+  .detail-info .brand{
+    font-size:11px;font-weight:700;color:var(--violet);
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;
+  }
+  .detail-info h2{font-size:20px;font-weight:800;line-height:1.3;margin-bottom:8px;}
+  .detail-info .detail-desc{
+    font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;
+  }
+  .detail-price-row{
+    display:flex;align-items:baseline;gap:10px;margin-bottom:18px;
+  }
+  .detail-price-row .price-now{font-size:24px;}
+  .detail-add-btn{
+    width:100%;padding:15px;border:none;border-radius:14px;
+    background:var(--ink);color:#fff;font-weight:700;font-size:15px;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .detail-add-btn:hover{background:var(--violet);}
+
+  @media (min-width:640px){
+    .detail-overlay{align-items:center;}
+    .detail-panel{border-radius:24px;}
+  }
+
+  /* ---------- Music Button ---------- */
+  .music-btn{
+    position:fixed;left:18px;bottom:18px;z-index:60;
+    width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--mint),var(--violet));
+    color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 22px -10px rgba(31,207,168,.55);
+    transition:transform .15s ease;
+  }
+  .music-btn:hover{transform:scale(1.06);}
+  .music-btn.playing{animation:musicSpin 3s linear infinite;}
+  @keyframes musicSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+  /* ============================================================
+     🌤️ NEW) Weather Widget (วิทเจ็ตสภาพอากาศ)
+     ============================================================ */
+  .weather-widget{
+    position:fixed;left:18px;top:78px;z-index:40;
+    background:linear-gradient(135deg, #1A1035, #2D1A52);
+    color:#fff;border-radius:18px;padding:12px 18px;
+    display:flex;align-items:center;gap:12px;
+    box-shadow:0 10px 25px -5px rgba(26,16,53,.35);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(8px);
+  }
+  .weather-icon{font-size:28px;}
+  .weather-info{display:flex;flex-direction:column;}
+  .weather-city{font-size:12px;color:rgba(255,255,255,.7);font-weight:500;}
+  .weather-temp{font-family:'Prompt';font-size:18px;font-weight:700;line-height:1.2;}
+  .weather-desc{font-size:11px;color:var(--mint);font-weight:600;}
+  .weather-clock{
+    font-family:'Prompt';font-size:11.5px;font-weight:600;
+    color:rgba(255,255,255,.85);letter-spacing:.02em;margin-top:2px;
+  }
+
+  @media (max-width:520px){
+    #searchInput{display:none;}
+    .trust{grid-template-columns:1fr;}
+    .card{gap:12px;padding:12px;}
+    .card-media{width:78px;height:78px;}
+    .card-body h3{font-size:13.5px;}
+    .price-now{font-size:15px;}
+    .view-tab{padding:9px 16px;font-size:13px;}
+    .detail-gallery-main{height:220px;}
+    .weather-widget{left:12px;top:70px;padding:9px 14px;gap:9px;}
+    .weather-icon{font-size:22px;}
+    .weather-temp{font-size:15px;}
+    .music-btn{left:12px;bottom:12px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot"></span>BANK<span>.MOBILE</span></div>
+    <input id="searchInput" type="text" placeholder="ค้นหารุ่นโทรศัพท์...">
+    <button class="cart-btn" id="cartBtn">🛒 <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="hero-blob b1"></span>
+  <span class="hero-blob b2"></span>
+  <span class="hero-blob b3"></span>
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="pulse"></span> ส่งฟรีทั่วไทย วันนี้เท่านั้น</div>
+    <h1>เลือกมือถือที่ใช่<br>ในราคาที่ <span>เข้าใจง่าย</span></h1>
+    <p>รวมมือถือทุกแบรนด์ดัง เปรียบเทียบราคาได้ชัดเจนในที่เดียว</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="view-tabs">
+    <button class="view-tab" id="tabPhone" data-view="phone">📱 โทรศัพท์</button>
+    <button class="view-tab" id="tabAccessory" data-view="accessory">🔌 อุปกรณ์เสริม</button>
+  </div>
+</div>
+
+<div class="cats wrap" id="catWrap"></div>
+
+<div class="wrap">
+  <div class="section-head">
+    <h2>สินค้าทั้งหมด</h2>
+    <span id="resultCount"></span>
+  </div>
+
+  <div class="grid" id="productGrid"></div>
+  <div class="pagination" id="pagination"></div>
+
+  <div class="trust">
+    <div class="trust-item"><div class="ic">🚚</div><div><b>ส่งฟรีทุกออเดอร์</b><p>ถึงบ้านใน 1-2 วัน</p></div></div>
+    <div class="trust-item"><div class="ic">🛡️</div><div><b>ของแท้ 100%</b><p>รับประกันศูนย์ไทย</p></div></div>
+    <div class="trust-item"><div class="ic">💳</div><div><b>ผ่อน 0%</b><p>สูงสุด 10 เดือน</p></div></div>
+    <div class="trust-item"><div class="ic">↩️</div><div><b>เปลี่ยน/คืนได้</b><p>ภายใน 7 วัน</p></div></div>
+  </div>
+</div>
+
+<footer>
+  <p>© BANK MOBILE — ร้านโทรศัพท์ออนไลน์ที่เข้าใจง่ายที่สุด</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>ตะกร้าของคุณ</h3>
+    <button id="closeCart">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none;">
+    <div class="total-row"><span>ยอดรวม</span><b id="cartTotal">฿0</b></div>
+    <button class="checkout-btn" id="checkoutBtn">สั่งซื้อสินค้า</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-panel">
+    <div class="detail-head">
+      <button class="detail-close" id="closeDetail">✕</button>
+    </div>
+    <div class="detail-gallery-main" id="detailMainImgWrap">
+      <img id="detailMainImg" src="" alt="">
+    </div>
+    <div class="detail-thumbs" id="detailThumbs"></div>
+    <div class="detail-info" id="detailInfo"></div>
+  </div>
+</div>
+
+<audio id="bgMusic" loop></audio>
+<button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
+
+<!-- 🌤️ วิทเจ็ตสภาพอากาศ (แทนที่แชทบอทเดิม) -->
+<div class="weather-widget">
+  <div class="weather-icon" id="weatherIcon">🌤️</div>
+  <div class="weather-info">
+    <div class="weather-city" id="weatherCity">กรุงเทพมหานคร</div>
+    <div class="weather-temp" id="weatherTemp">32°C</div>
+    <div class="weather-desc" id="weatherDesc">มีแดดจัด</div>
+    <div class="weather-clock" id="weatherClock">🕒 --:--:-- น.</div>
+  </div>
+</div>
+
+<script>
+const MUSIC_URL = 'Fnaf.mp3';
+
+const CATEGORIES = [
+  { id: 'all',     label: 'ทั้งหมด' },
+  { id: 'iphone',  label: 'iPhone' },
+  { id: 'samsung', label: 'Samsung' },
+  { id: 'xiaomi',  label: 'Xiaomi' },
+  { id: 'others',  label: 'แบรนด์อื่นๆ' },
+  { id: 'gaming',  label: 'สายเกม' },
+  { id: 'budget',  label: 'ประหยัด' },
+];
+
+const PRODUCTS = [
+  {
+    id: 45,
+    name: 'iPhone 17 Pro Max 256GB',
+    brand: 'Apple',
+    specs: 'จอ 6.9" · ชิป A19 Pro · กล้อง Fusion 48MP x3',
+    price: 46900,
+    old: 49900,
+    tag: 'มาใหม่',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR45P3DD8GuVrwuwKF8Je2IF5xbr9URzdZPllVWaZkO7w&s',
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Vve-1ZZtTJRDEe_xPE2CxQ4vgcWhb0eKMqxCCjqlIw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCR9-bU9BU4rNja89VzPI_WynfO587sTczmKHkvf9j8A&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqjNX3oyB7Bvoi7qdocUdoTTbojeV6xAnGBcqwTVVKfg&s'
+    ],
+    desc: 'iPhone 17 Pro Max มาพร้อมจอ 6.9 นิ้ว ชิป A19 Pro แรงแซงทุกรุ่นก่อนหน้า และระบบกล้อง Fusion 48MP ทั้ง 3 ตัว ถ่ายภาพคมชัดทุกสภาพแสง ตัวเครื่องดีไซน์ไทเทเนียมเบาแต่แข็งแรง'
+  },
+  {
+    id: 46,
+    name: 'iPhone 17 128GB',
+    brand: 'Apple',
+    specs: 'จอ 6.3" · ชิป A19 · ดีไซน์รุ่นใหม่ล่าสุด',
+    price: 28900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmHk1ZFezf6_wyeF3iAsQYbL8nJjKItNrj7EIYMO-eCQ&s'
+  },
+  {
+    id: 47,
+    name: 'Samsung Galaxy S26 Ultra 256GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.9" · ปากกา S Pen · กล้อง 200MP · Snapdragon 8 Elite Gen 5',
+    price: 44900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq0Xpvj0YBaxhBwxFCbia3lN7JpBtt3cJk4fXrP1q8Ag&s=10'
+  },
+  {
+    id: 48,
+    name: 'Samsung Galaxy S26 256GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.3" · ชิป Snapdragon 8 Elite Gen 5 · จอลื่น 120Hz',
+    price: 28900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5SGf75IFS65hHCknRUn4t5zqda5LJta2wuhuXa8km2A&s'
+  },
+  {
+    id: 49,
+    name: 'Xiaomi 17 Ultra 512GB',
+    brand: 'Xiaomi',
+    specs: 'จอ 6.9" · เลนส์ Leica ขนาด 1 นิ้ว · แบต 6000mAh',
+    price: 39900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'xiaomi',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYqW7eB6r4HDHmZ_DMFpDDw1U-yAurTckjzt3VNOwi9Q&s'
+  },
+  {
+    id: 50,
+    name: 'Google Pixel 10 Pro 256GB',
+    brand: 'Google',
+    specs: 'AI กล้องอัจฉริยะรุ่นล่าสุด · ชิป Tensor G5',
+    price: 29900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI3YuIYzFI1a73zWgbrUMRGoA3SAuHyr8hb6AWBU56Xg&s=10'
+  },
+  {
+    id: 51,
+    name: 'OnePlus 15 256GB',
+    brand: 'OnePlus',
+    specs: 'ชิป Snapdragon 8 Elite Gen 5 · จอ 165Hz · ชาร์จไวสุด',
+    price: 31900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0N-pN2dh4ape0Gkybd6TDcRFREyJqbtYKuXiIq9_GCA&s'
+  },
+  {
+    id: 52,
+    name: 'Vivo X300 Pro 256GB',
+    brand: 'Vivo',
+    specs: 'เลนส์ Zeiss · กล้อง 200MP · แบตอึดทั้งวัน',
+    price: 33900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcUHXK3d6QkMyHEYeYpamJtmyG_j3TEj5RFIJuubTVHA&s=10'
+  },
+  {
+    id: 1,
+    name: 'iPhone 15 Pro Max 256GB',
+    brand: 'Apple',
+    specs: 'จอ 6.7" · ชิป A17 Pro · กล้อง 48MP',
+    price: 45900,
+    old: 49900,
+    tag: 'ลดราคา',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGgqgchJOfistq5nHFZQq0sfTkVPHgqkbs_wcQlYS5sw&s=10'
+  },
+  {
+    id: 2,
+    name: 'iPhone 15 Pro 128GB',
+    brand: 'Apple',
+    specs: 'จอ 6.1" · ชิป A17 Pro · กล้อง 48MP',
+    price: 39900,
+    old: null,
+    tag: '',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT30GywlZxLnL09otrCnuBkeoLdoyLYuSJVYMCZx37W3Q&s=10'
+  },
+  {
+    id: 3,
+    name: 'iPhone 15 128GB',
+    brand: 'Apple',
+    specs: 'จอ 6.1" · ชิป A16 · กล้อง 48MP',
+    price: 29900,
+    old: null,
+    tag: '',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu6gKsNTEhhzAwG_knDTa-KkkZikbo8W02D-Z9XRDQdg&s=10'
+  },
+  {
+    id: 4,
+    name: 'iPhone 15 Plus 128GB',
+    brand: 'Apple',
+    specs: 'จอ 6.7" · ชิป A16 · แบตอึด',
+    price: 32900,
+    old: 34900,
+    tag: 'ลดราคา',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe-uRRJb-lSAr4iEKDcWGHW1zqHBdv1y6jByRTXpqtQw&s'
+  },
+  {
+    id: 5,
+    name: 'iPhone 14 128GB',
+    brand: 'Apple',
+    specs: 'จอ 6.1" · ชิป A15 · กล้อง 12MP',
+    price: 24900,
+    old: 26900,
+    tag: 'ลดราคา',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRer7ILy1zeuuN4zdKRro78BbdHugCtq1jMa7iBFdjb2g&s=10'
+  },
+  {
+    id: 6,
+    name: 'iPhone SE (2024) 64GB',
+    brand: 'Apple',
+    specs: 'จอ 4.7" · ชิป A15 · ปุ่ม Home',
+    price: 15900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'iphone',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx-kMhprCKZJi4hVg2burY_uX65x03zjscvtUZFzFXow&s=10'
+  },
+  {
+    id: 7,
+    name: 'Galaxy S24 Ultra 512GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.8" · ปากกา S Pen · กล้อง 200MP',
+    price: 41900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCNAz6BgTDMyenbjgORq7Gm0ukDXjE1CG843LJzLV3kw&s=10'
+  },
+  {
+    id: 8,
+    name: 'Galaxy S24+ 256GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.7" · ชิป Snapdragon · จอลื่น 120Hz',
+    price: 33900,
+    old: null,
+    tag: '',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYMa4aOamL4-rz7DCr-KjRFu_6sod6Fdn8u4CFkp0pw&s=10'
+  },
+  {
+    id: 9,
+    name: 'Galaxy S24 128GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.2" · กล้อง AI · กะทัดรัด',
+    price: 27900,
+    old: 29900,
+    tag: 'ลดราคา',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfQ2TeQIig5HLCvfNmhu9J8uPa2CXiEEqqzHfG3X9mQ&s=10'
+  },
+  {
+    id: 10,
+    name: 'Galaxy A55 5G 256GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.6" · กันน้ำ IP67 · แบตอึด',
+    price: 11900,
+    old: 12900,
+    tag: 'ลดราคา',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT89wbcF6O9L9uO4x0t3iwGqD0KJmbWeshlJ6RIH-Jhow&s=10'
+  },
+  {
+    id: 11,
+    name: 'Galaxy A35 5G 128GB',
+    brand: 'Samsung',
+    specs: 'จอ 6.6" · กล้อง 50MP · ราคาคุ้ม',
+    price: 9990,
+    old: null,
+    tag: '',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJVrWv140LcgNnIK3VWN-0ZXiiw5EP1YRoi48HQGE2AQ&s'
+  },
+  {
+    id: 12,
+    name: 'Galaxy Z Flip5 256GB',
+    brand: 'Samsung',
+    specs: 'จอพับได้ · กล้องคู่ · ดีไซน์กะทัดรัด',
+    price: 35900,
+    old: 38900,
+    tag: 'ลดราคา',
+    cat: 'samsung',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQGogk9OlBxqa4Hw-hmNf-L_0r4IRTo66tAKWzebo9wg&s=10'
+  },
+  {
+    id: 13,
+    name: 'Xiaomi 14 Ultra 512GB',
+    brand: 'Xiaomi',
+    specs: 'จอ 6.73" · เลนส์ Leica 4 ตัว · แฟลกชิป',
+    price: 34900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'xiaomi',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOUsN0CDY_vRRRdQcwpI6EKrbpc9ifOLug2g5wOp1jCQ&s=10'
+  },
+  {
+    id: 14,
+    name: 'Xiaomi 14 256GB',
+    brand: 'Xiaomi',
+    specs: 'จอ 6.36" · เลนส์ Leica · ชาร์จเร็ว 90W',
+    price: 24900,
+    old: null,
+    tag: '',
+    cat: 'xiaomi',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJg7RtOrLtawa-uF9dI48lX_4NmxYJBwzsiEfidxF3PA&s'
+  },
+  {
+    id: 15,
+    name: 'Redmi Note 13 Pro 256GB',
+    brand: 'Xiaomi',
+    specs: 'จอ AMOLED โค้ง · กล้อง 200MP',
+    price: 9990,
+    old: 10990,
+    tag: 'ลดราคา',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrBQSTsSjbfyFD2rPGU5X5UO5IOyoCOOVyuFn5uI1HaA&s=10'
+  },
+  {
+    id: 16,
+    name: 'Redmi Note 13 256GB',
+    brand: 'Xiaomi',
+    specs: 'จอ AMOLED 120Hz · กล้อง 108MP',
+    price: 6490,
+    old: 6990,
+    tag: 'ลดราคา',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh9zWmoMARKvEbqWT_rufEYWilFBGuWfdzl9Y4aaeJBg&s=10'
+  },
+  {
+    id: 17,
+    name: 'Redmi 13C 128GB',
+    brand: 'Xiaomi',
+    specs: 'จอใหญ่ 6.74" · แบตอึด 5000mAh',
+    price: 3990,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPfu91_R1X_proMhRY5zQwM1vmnp7X7UVaCcPmg3UM_Q&s=10'
+  },
+  {
+    id: 18,
+    name: 'POCO X6 Pro 256GB',
+    brand: 'Xiaomi',
+    specs: 'ชิปแรง · จอ AMOLED 120Hz',
+    price: 10900,
+    old: 11900,
+    tag: 'ลดราคา',
+    cat: 'xiaomi',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYvFMhQR-MYD0P7cgFRoDAntanMvJOltT18BuRYiCVPQ&s=10'
+  },
+  {
+    id: 19,
+    name: 'OPPO Find X7 Ultra 512GB',
+    brand: 'OPPO',
+    specs: 'กล้องคู่ Hasselblad · จอโค้ง',
+    price: 32900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGb_i5NbQL0jWlLaqMZhH2io_6mlptbRRlsB6_knGVSg&s=10'
+  },
+  {
+    id: 20,
+    name: 'OPPO Reno11 5G 256GB',
+    brand: 'OPPO',
+    specs: 'กล้องพอร์ตเทรต · ชาร์จเร็ว 67W',
+    price: 13900,
+    old: 14900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtn3ph3LIJJYPNI9JB92aXExbQfV8ViqisNAoJzJOf3g&s'
+  },
+  {
+    id: 21,
+    name: 'OPPO A79 5G 256GB',
+    brand: 'OPPO',
+    specs: 'จอใหญ่คมชัด · แบตอึด 5000mAh',
+    price: 7990,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmPpwu9ChffgVa7fp5aIrjFRAcwwHFVNyiGmyk8MKuA&s=10'
+  },
+  {
+    id: 22,
+    name: 'OPPO A18 64GB',
+    brand: 'OPPO',
+    specs: 'มือถือประหยัด · ใช้งานง่าย',
+    price: 3290,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuhw2kALb_xoFqt67t5RL2QLgbP4CU1_9kSp5yxvMyPQ&s'
+  },
+  {
+    id: 23,
+    name: 'Vivo X100 Pro 512GB',
+    brand: 'Vivo',
+    specs: 'เลนส์ ZEISS · ชิปแฟลกชิป',
+    price: 33900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQX6SNP5fu2x2uyvYsWR9WOaaEwXz0ks1GLfjaiFHYzA&s=10'
+  },
+  {
+    id: 24,
+    name: 'Vivo V29 5G 256GB',
+    brand: 'Vivo',
+    specs: 'จอโค้ง AMOLED · กล้องหน้า 50MP',
+    price: 12900,
+    old: 13500,
+    tag: '',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsEZQMPfRX93noz1yNEzS0k7Wg1m7LXYN8VoYyxxKk4A&s=10'
+  },
+  {
+    id: 25,
+    name: 'Vivo Y36 128GB',
+    brand: 'Vivo',
+    specs: 'ดีไซน์บาง · แบตอึดทั้งวัน',
+    price: 6990,
+    old: 7490,
+    tag: 'ลดราคา',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQSfkAevxBt2cwoX-VcGDM-WThBh9tMMQmUjOqKJuvFQ&s=10'
+  },
+  {
+    id: 26,
+    name: 'Vivo Y02s 64GB',
+    brand: 'Vivo',
+    specs: 'มือถือเริ่มต้น ใช้งานพื้นฐาน',
+    price: 2990,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY1wP4FDLZ0jXlNttKXP1arKOaSn1MJpGYYnElIZGJLA&s=10'
+  },
+  {
+    id: 27,
+    name: 'Realme GT5 Pro 256GB',
+    brand: 'Realme',
+    specs: 'ชิปเรือธง · ชาร์จไว 100W',
+    price: 22900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0Mqp3bNYJvubN8-w55a5Jq6K927eQyonAyrIhrjYMw&s=10'
+  },
+  {
+    id: 28,
+    name: 'Realme 12 Pro+ 256GB',
+    brand: 'Realme',
+    specs: 'กล้องซูมไกล 3x · ดีไซน์หรู',
+    price: 12900,
+    old: 13900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu7hwQmQfogr-P5D1ephnEwX5-ddr6K_fpVt254r0xJA&s=10'
+  },
+  {
+    id: 29,
+    name: 'Realme C67 256GB',
+    brand: 'Realme',
+    specs: 'กล้อง 108MP ราคาคุ้มค่า',
+    price: 6490,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD1whsuMkjKa45oEdtvYuPgn9k2fm1FGEznqdhCyBH0w&s=10'
+  },
+  {
+    id: 30,
+    name: 'Realme Narzo N53 128GB',
+    brand: 'Realme',
+    specs: 'บางเบา 6.9mm ราคาประหยัด',
+    price: 3490,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9JoqHraM22s9QD6H3_wsah3zG32OBL83LDCCNfK3JGw&s=10'
+  },
+  {
+    id: 31,
+    name: 'Pixel 8 Pro 256GB',
+    brand: 'Google',
+    specs: 'AI กล้องอัจฉริยะ · Android แท้',
+    price: 33900,
+    old: null,
+    tag: '',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSERsTeUmQGyI5B5OoLqUcVELP5qCYKguDT5HklWZQiXg&s=10'
+  },
+  {
+    id: 32,
+    name: 'Pixel 8 128GB',
+    brand: 'Google',
+    specs: 'กล้องคมชัด · อัปเดตยาว 7 ปี',
+    price: 24900,
+    old: 26900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx2Mud5HyIYwaKTLpicFK8rchPszdksKzl2yZCGHaQ9g&s=10'
+  },
+  {
+    id: 33,
+    name: 'Pixel 8a 128GB',
+    brand: 'Google',
+    specs: 'สเปกดี ราคาย่อมเยา',
+    price: 16900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdF51yb3hcrkNiAE1k_fo_zDtiH9hXk9N1-9kKcB2d7w&s=10'
+  },
+  {
+    id: 34,
+    name: 'ASUS ROG Phone 8 512GB',
+    brand: 'ASUS',
+    specs: 'ชิปเกมมิ่งแรงสุด · จอ 165Hz',
+    price: 36900,
+    old: 39900,
+    tag: 'สายเกม',
+    cat: 'gaming',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj403aYaATP9mpWEblP1jDCZfWgsllwBGMH3cffCWkRw&s'
+  },
+  {
+    id: 35,
+    name: 'ASUS ROG Phone 8 Pro 1TB',
+    brand: 'ASUS',
+    specs: 'ระบายความร้อนไว · จอยเกมมิ่ง',
+    price: 45900,
+    old: null,
+    tag: 'สายเกม',
+    cat: 'gaming',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnkxtPyD80IrisWwgFxbUCAfQxPAMpc2ZzVhJkjjTM8w&s=10'
+  },
+  {
+    id: 36,
+    name: 'ASUS Zenfone 11 Ultra',
+    brand: 'ASUS',
+    specs: 'กะทัดรัดแต่แรง · กล้องกันสั่น',
+    price: 29900,
+    old: null,
+    tag: '',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqNUk_ELhEinIeqNfOA22vOzsFBxPrR0HSHaKWBP1Y7w&s=10'
+  },
+  {
+    id: 37,
+    name: 'Nothing Phone (2) 256GB',
+    brand: 'Nothing',
+    specs: 'ดีไซน์โปร่งใส ไฟ Glyph',
+    price: 19900,
+    old: 21900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2Q8GM8PBdTgQTe7FChWAF6ONOnsuqa43-WpO0OiL6Gg&s=10'
+  },
+  {
+    id: 38,
+    name: 'Nothing Phone (2a) 128GB',
+    brand: 'Nothing',
+    specs: 'ดีไซน์เอกลักษณ์ ราคาคุ้ม',
+    price: 10900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSIGgQphm4lcSMLC6cZiss92u48KZx0-ClWxMu7ID14w&s'
+  },
+  {
+    id: 39,
+    name: 'OnePlus 12 256GB',
+    brand: 'OnePlus',
+    specs: 'ชาร์จไว 100W · จอ 2K',
+    price: 27900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK6GzNythWYnLUkVv0zSwm7HgWrQqiSu8WrjJfqOFr-A&s=10'
+  },
+  {
+    id: 40,
+    name: 'OnePlus 12R 256GB',
+    brand: 'OnePlus',
+    specs: 'สเปกใกล้เรือธง ราคาย่อมเยา',
+    price: 18900,
+    old: 19900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2GgFD7HER8KDQkE-UdH9M_xs2x8h9wWltvKxmmMpqVA&s=10'
+  },
+  {
+    id: 41,
+    name: 'OnePlus Nord CE4 128GB',
+    brand: 'OnePlus',
+    specs: 'จอลื่น 120Hz แบตอึด',
+    price: 10900,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa1KAvSVqQ9-BJYz9v7JorVEoPViTnq2Tv4G72nr__vQ&s'
+  },
+  {
+    id: 42,
+    name: 'Honor Magic6 Pro 512GB',
+    brand: 'Honor',
+    specs: 'กล้องคมชัด · จอสว่างพิเศษ',
+    price: 29900,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz_ATmZa4xtyZACEv_wfPGNoY5JhJKXveoOYD4ZwSb6A&s=10'
+  },
+  {
+    id: 43,
+    name: 'Honor 90 256GB',
+    brand: 'Honor',
+    specs: 'กล้องหน้า 50MP · จอโค้ง',
+    price: 12900,
+    old: 13900,
+    tag: 'ลดราคา',
+    cat: 'others',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_8XGIttEN0wAXyYPJ8_w35We4_3iK9L70PMFNYVxIlg&s=10'
+  },
+  {
+    id: 44,
+    name: 'Honor X9b 256GB',
+    brand: 'Honor',
+    specs: 'จอกันกระแทก · แบตอึด',
+    price: 8990,
+    old: null,
+    tag: '',
+    cat: 'budget',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN4YRFg0_zyltwffEfPZBXDmQgBaV8hoRFp03xD1BD_w&s=10'
+  },
+];
+
+const ACC_CATEGORIES = [
+  { id: 'all',     label: 'ทั้งหมด' },
+  { id: 'case',    label: 'เคสโทรศัพท์' },
+  { id: 'charger', label: 'หัวชาร์จ' },
+  { id: 'cable',   label: 'สายชาร์จ' },
+  { id: 'audio',   label: 'หูฟัง' },
+  { id: 'other',   label: 'อื่นๆ' },
+];
+
+const ACCESSORIES = [
+  {
+    id: 2001,
+    name: 'เคสใส กันกระแทก iPhone 17 Pro Max',
+    brand: 'เคสโทรศัพท์',
+    specs: 'กันกระแทกมุม 4 ด้าน · ใส เห็นสีเครื่องเดิม',
+    desc: 'เคสซิลิโคนใสคุณภาพสูง ออกแบบมาให้กันกระแทกได้ดีบริเวณมุมทั้ง 4 ด้าน พร้อมช่องเจาะกล้องและปุ่มกดที่ตรงรุ่นแบบพอดี ใช้งานง่าย ไม่เหลืองเมื่อใช้ไปนานๆ',
+    price: 290,
+    old: 390,
+    tag: 'ลดราคา',
+    cat: 'case',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO-Bc93NmtgIE_AdvkDTnrgLZXdvxyaOKZkz1jL70FMg&s=10',
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3sRSkk3uLOpmceqNFjSLe3UADpKxh8yziGUui_Fa9Q&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReIs6V6JF2wD1FCJlMm33Y0edV1_ul_ng27IgG0xMQsA&s',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg7unstj0afTv-b8d0lPC59dlT3I2lPOXxhTuHgZeVWQ&s=10'
+    ]
+  },
+  {
+    id: 2002,
+    name: 'เคสหนัง MagSafe Samsung S26 Ultra',
+    brand: 'เคสโทรศัพท์',
+    specs: 'วัสดุหนัง PU · แม่เหล็กในตัว · มีที่ตั้งการ์ด',
+    price: 450,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'case',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0MakkZTzBTkqTpCFd_KaXx2WjFO6x4N_rSyYsfXE58g&s=10'
+  },
+  {
+    id: 2003,
+    name: 'หัวชาร์จเร็ว 65W GaN',
+    brand: 'หัวชาร์จ',
+    specs: 'รองรับ PD/QC · เล็กพกพาง่าย · ชาร์จเร็วทุกรุ่น',
+    desc: 'หัวชาร์จเทคโนโลยี GaN ให้กำลังไฟสูงสุด 65W ขนาดเล็กกว่าหัวชาร์จทั่วไปเกือบครึ่ง รองรับมาตรฐาน PD และ QC ชาร์จโทรศัพท์ แท็บเล็ต และโน้ตบุ๊กบางรุ่นได้ในหัวเดียว',
+    price: 590,
+    old: 690,
+    tag: 'ลดราคา',
+    cat: 'charger',
+    image: 'https://down-th.img.susercontent.com/file/th-11134207-7r98s-lu59thhrjeoh54',
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJKeD7pQThbMZFEozFVLM2ULfHQStPNhmoy4f8Nz9S7g&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTobXO6giMlF9gsEJKiuBiccz5sfVJ60wApTof1xazY4Q&s'
+    ]
+  },
+  {
+    id: 2004,
+    name: 'หัวชาร์จ 20W USB-C',
+    brand: 'หัวชาร์จ',
+    specs: 'ชาร์จไว · ขนาดกะทัดรัด · ใช้ได้ทุกรุ่นที่รองรับ PD',
+    price: 250,
+    old: null,
+    tag: '',
+    cat: 'charger',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXNukF3r1LZvvRZA89USfntgQ5uF2VqTn8v7zAQW3Nww&s=10'
+  },
+  {
+    id: 2005,
+    name: 'สายชาร์จ USB-C to USB-C 1.2m',
+    brand: 'สายชาร์จ',
+    specs: 'ถัก Nylon กันขาด · ชาร์จเร็ว 60W · ยาว 1.2 เมตร',
+    price: 190,
+    old: 250,
+    tag: 'ลดราคา',
+    cat: 'cable',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8J6Pc6aG0ba1gi8JmNL-jGrDZ-qgheL-ieJtqByqu_g&s'
+  },
+  {
+    id: 2006,
+    name: 'สายชาร์จ Lightning MFi 1m',
+    brand: 'สายชาร์จ',
+    specs: 'ผ่านมาตรฐาน MFi · ใช้กับ iPhone/iPad ได้ · ยาว 1 เมตร',
+    price: 220,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'cable',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRayrAq2gx0Jfbajrt8IA86ohkWZURH2uhg-Qwdy7ywUA&s'
+  },
+  {
+    id: 2007,
+    name: 'Airpods pro 3',
+    brand: 'หูฟัง',
+    specs: 'ตัดเสียงรบกวน ANC · แบตอึด 30 ชม. (รวมเคส) · กันน้ำ IPX4',
+    desc: 'หูฟังไร้สายรุ่น Airpods pro 3 มาพร้อมระบบตัดเสียงรบกวนแบบแอคทีฟ (ANC) เสียงเบสหนักแน่น เชื่อมต่อบลูทูธเวอร์ชันล่าสุดที่หน่วงต่ำ เหมาะกับการฟังเพลงและเล่นเกม แบตในตัวหูฟังใช้ได้ต่อเนื่องหลายชั่วโมง',
+    price: 7500,
+    old: 8990,
+    tag: 'ลดราคา',
+    cat: 'audio',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4XBFl1ZrEWM4Q1w1R45K0NIUccjWc53PM8wGKxFUbfw&s=10',
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1cFRHgf2epwO17MKamWHHArus2_K8cxBNyLPWk24GyA&s',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVcPoNHw8ERwonEnoivj1jXTsK97i26gi6FX_MR3V5Q&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzFcrQ2YRoEU7LJzjhyHs4eyj9CHSz6-SNOYdtDCmWZg&s=10'
+    ]
+  },
+  {
+    id: 2008,
+    name: 'ที่ชาร์จไร้สาย MagSafe Stand',
+    brand: 'อื่นๆ',
+    specs: 'ชาร์จไว 15W · วางตั้งได้ · แถมสาย USB-C',
+    price: 690,
+    old: null,
+    tag: 'มาใหม่',
+    cat: 'other',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9iHgF5VTH_7Z5mWup8l8hSbFZhJqq5bDaXhrOjxF0Kw&s'
+  },
+  {
+    id: 2009,
+    name: 'ฟิล์มกระจกกันรอย 9H',
+    brand: 'ฟิล์มกระจก',
+    specs: 'ความแข็ง 9H · ใส คมชัด · พร้อมชุดติดตั้ง',
+    price: 150,
+    old: 190,
+    tag: 'ลดราคา',
+    cat: 'other',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRn-FBWyakZzpIBizH-toubBhVaQaD9EmCi3hokovCC8w&s=10'
+  },
+  {
+    id: 2010,
+    name: 'พาวเวอร์แบงค์ 20000mAh',
+    brand: 'อื่นๆ',
+    specs: 'ชาร์จเร็ว 22.5W · จอแสดงเปอร์เซ็นต์แบต · พกพาสะดวก',
+    price: 890,
+    old: null,
+    tag: '',
+    cat: 'other',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6QdWrZRr0Mm2VKopNC4d_ZSjiu57FxkKa8Hd1EvYI6w&s=10'
+  },
+];
+
+let cart = [];      
+let activeCat = 'all';
+let searchTerm = '';
+let currentPage = 1;   
+let viewMode = 'phone';   
+
+const PAGE_SIZE = 4;
+
+const money = n => '฿' + n.toLocaleString('th-TH');
+
+const ALL_ITEMS = () => PRODUCTS.concat(ACCESSORIES);
+
+function currentCategories(){ return viewMode === 'phone' ? CATEGORIES : ACC_CATEGORIES; }
+function currentItems(){ return viewMode === 'phone' ? PRODUCTS : ACCESSORIES; }
+
+function switchView(mode){
+  viewMode = mode;
+  activeCat = 'all';
+  searchTerm = '';
+  currentPage = 1;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('tabPhone').classList.toggle('active', mode === 'phone');
+  document.getElementById('tabAccessory').classList.toggle('active', mode === 'accessory');
+  document.querySelector('.section-head h2').textContent =
+    mode === 'phone' ? 'สินค้าทั้งหมด' : 'อุปกรณ์เสริมทั้งหมด';
+  renderCats();
+  renderGrid();
+}
+
+function renderCats(){
+  const wrap = document.getElementById('catWrap');
+  wrap.innerHTML = currentCategories().map(c =>
+    `<button class="chip ${activeCat===c.id?'active':''}" data-cat="${c.id}">${c.label}</button>`
+  ).join('');
+  wrap.querySelectorAll('.chip').forEach(btn=>{
+    btn.onclick = () => { activeCat = btn.dataset.cat; currentPage = 1; renderCats(); renderGrid(); };
+  });
+}
+
+function renderGrid(){
+  const grid = document.getElementById('productGrid');
+  const term = searchTerm.trim().toLowerCase();
+
+  const list = currentItems().filter(p=>{
+    const matchCat = activeCat === 'all' || p.cat === activeCat;
+    const matchSearch = !term || p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term);
+    return matchCat && matchSearch;
+  });
+
+  document.getElementById('resultCount').textContent = `พบ ${list.length} รายการ`;
+
+  if(!list.length){
+    grid.innerHTML = `<div class="empty">😕 ไม่พบสินค้า ลองค้นหาคำอื่นดูนะ</div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(list.length / PAGE_SIZE);
+  if(currentPage > totalPages) currentPage = totalPages;
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = list.slice(startIndex, startIndex + PAGE_SIZE);
+
+  grid.innerHTML = pageItems.map(p => `
+    <div class="card" data-detail="${p.id}">
+      <div class="card-media">
+        ${p.tag ? `<span class="tag">${p.tag}</span>` : ''}
+        <img src="${p.image}" alt="${p.name}">
+      </div>
+      <div class="card-body">
+        <div class="brand">${p.brand}</div>
+        <h3>${p.name}</h3>
+        <div class="specs">${p.specs}</div>
+      </div>
+      <div class="card-side">
+        <span class="price-now">${money(p.price)}</span>
+        ${p.old ? `<span class="price-old">${money(p.old)}</span>` : ''}
+        <button class="add-btn" data-add="${p.id}">+</button>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('[data-add]').forEach(btn=>{
+    btn.onclick = (e) => { e.stopPropagation(); addToCart(Number(btn.dataset.add)); };
+  });
+
+  grid.querySelectorAll('[data-detail]').forEach(card=>{
+    card.onclick = () => openDetail(Number(card.dataset.detail));
+  });
+
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages){
+  const box = document.getElementById('pagination');
+
+  if(totalPages <= 1){
+    box.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+
+  html += `<button class="page-btn" data-page="${currentPage - 1}" ${currentPage===1?'disabled':''}>‹</button>`;
+
+  for(let i = 1; i <= totalPages; i++){
+    html += `<button class="page-btn ${i===currentPage?'active':''}" data-page="${i}">${i}</button>`;
+  }
+
+  html += `<button class="page-btn" data-page="${currentPage + 1}" ${currentPage===totalPages?'disabled':''}>›</button>`;
+
+  box.innerHTML = html;
+
+  box.querySelectorAll('[data-page]').forEach(btn=>{
+    btn.onclick = () => {
+      currentPage = Number(btn.dataset.page);
+      renderGrid();
+      window.scrollTo({ top: document.getElementById('catWrap').offsetTop - 80, behavior:'smooth' });
+    };
+  });
+}
+
+function addToCart(id){
+  const item = cart.find(i => i.id === id);
+  if(item){ item.qty++; } else { cart.push({ id, qty: 1 }); }
+  renderCart();
+  openCart();
+  showToast('เพิ่มลงตะกร้าแล้ว ✅');
+}
+
+function changeQty(id, delta){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+
+function removeItem(id){
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+
+function renderCart(){
+  const body = document.getElementById('cartBody');
+  const foot = document.getElementById('cartFoot');
+  document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+
+  if(!cart.length){
+    body.innerHTML = `<div class="cart-empty">🛒<br>ตะกร้าว่างเปล่า</div>`;
+    foot.style.display = 'none';
+    return;
+  }
+
+  let total = 0;
+  body.innerHTML = cart.map(item => {
+    const p = ALL_ITEMS().find(pp => pp.id === item.id);
+    total += p.price * item.qty;
+    return `
+      <div class="cart-item">
+        <img src="${p.image}" alt="${p.name}">
+        <div class="cart-item-info">
+          <div>${p.name}</div>
+          <b>${money(p.price)}</b>
+          <div class="qty-row">
+            <button data-dec="${p.id}">−</button>
+            <span>${item.qty}</span>
+            <button data-inc="${p.id}">+</button>
+            <button class="remove" data-remove="${p.id}">ลบ</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('cartTotal').textContent = money(total);
+  foot.style.display = 'block';
+
+  body.querySelectorAll('[data-inc]').forEach(b => b.onclick = () => changeQty(Number(b.dataset.inc), 1));
+  body.querySelectorAll('[data-dec]').forEach(b => b.onclick = () => changeQty(Number(b.dataset.dec), -1));
+  body.querySelectorAll('[data-remove]').forEach(b => b.onclick = () => removeItem(Number(b.dataset.remove)));
+}
+
+function openCart(){
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeCart(){
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function openDetail(id){
+  const p = ALL_ITEMS().find(pp => pp.id === id);
+  if(!p) return;
+
+  const gallery = (p.images && p.images.length) ? p.images : [p.image];
+
+  const mainImg = document.getElementById('detailMainImg');
+  mainImg.src = gallery[0];
+  mainImg.alt = p.name;
+
+  const thumbsBox = document.getElementById('detailThumbs');
+  if(gallery.length > 1){
+    thumbsBox.innerHTML = gallery.map((src,i) =>
+      `<img src="${src}" data-idx="${i}" class="${i===0?'active':''}">`
+    ).join('');
+    thumbsBox.querySelectorAll('img').forEach(thumb=>{
+      thumb.onclick = () => {
+        mainImg.src = gallery[Number(thumb.dataset.idx)];
+        thumbsBox.querySelectorAll('img').forEach(t=>t.classList.remove('active'));
+        thumb.classList.add('active');
+      };
+    });
+  } else {
+    thumbsBox.innerHTML = '';
+  }
+
+  document.getElementById('detailInfo').innerHTML = `
+    <div class="brand">${p.brand}</div>
+    <h2>${p.name}</h2>
+    <div class="detail-desc">${p.desc || p.specs}</div>
+    <div class="detail-price-row">
+      <span class="price-now">${money(p.price)}</span>
+      ${p.old ? `<span class="price-old">${money(p.old)}</span>` : ''}
+    </div>
+    <button class="detail-add-btn" id="detailAddBtn">เพิ่มลงตะกร้า</button>
+  `;
+  document.getElementById('detailAddBtn').onclick = () => {
+    addToCart(p.id);
+    closeDetail();
+  };
+
+  document.getElementById('detailOverlay').classList.add('show');
+}
+function closeDetail(){
+  document.getElementById('detailOverlay').classList.remove('show');
+}
+
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+document.getElementById('cartBtn').onclick = openCart;
+document.getElementById('closeCart').onclick = closeCart;
+document.getElementById('overlay').onclick = closeCart;
+
+document.getElementById('tabPhone').onclick = () => switchView('phone');
+document.getElementById('tabAccessory').onclick = () => switchView('accessory');
+
+document.getElementById('closeDetail').onclick = closeDetail;
+document.getElementById('detailOverlay').onclick = (e) => {
+  if(e.target.id === 'detailOverlay') closeDetail();
+};
+document.getElementById('checkoutBtn').onclick = () => {
+  if(!cart.length) return;
+  cart = [];
+  renderCart();
+  closeCart();
+  showToast('สั่งซื้อสำเร็จ ขอบคุณครับ 🎉');
+};
+document.getElementById('searchInput').oninput = (e) => {
+  searchTerm = e.target.value;
+  currentPage = 1;
+  renderGrid();
+};
+
+document.getElementById('tabPhone').classList.add('active');
+renderCats();
+renderGrid();
+renderCart();
+
+// ---------- ระบบเล่นเพลง ----------
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.src = MUSIC_URL;
+const musicBtn = document.getElementById('musicBtn');
+let musicPlaying = false;
+musicBtn.onclick = () => {
+  if(musicPlaying){
+    bgMusic.pause();
+    musicBtn.classList.remove('playing');
+    musicBtn.textContent = '🎵';
+  } else {
+    bgMusic.play().catch(()=>{
+      showToast('ใส่ลิงก์เพลงก่อนนะครับ 🎵');
+    });
+    musicBtn.classList.add('playing');
+    musicBtn.textContent = '⏸️';
+  }
+  musicPlaying = !musicPlaying;
+};
+
+// ============================================================
+// 🌤️ ระบบดึงข้อมูลสภาพอากาศจริง (Open-Meteo API - ฟรี ไม่ต้องใช้ Key)
+// ============================================================
+async function fetchWeather() {
+  try {
+    // พิกัดกรุงเทพมหานคร (Lat: 13.75, Lon: 100.5167)
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.75&longitude=100.5167&current=temperature_2m,weather_code&timezone=Asia%2FBangkok';
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    if(data && data.current) {
+      const temp = Math.round(data.current.temperature_2m);
+      const code = data.current.weather_code;
+      
+      document.getElementById('weatherTemp').textContent = `${temp}°C`;
+      
+      // แปลง Weather Code เป็นไอคอนและคำอธิบายภาษาไทย
+      let icon = '🌤️';
+      let desc = 'ท้องฟ้าโปร่ง';
+      
+      if(code === 0) { icon = '☀️'; desc = 'แดดจัด'; }
+      else if(code >= 1 && code <= 3) { icon = '⛅'; desc = 'มีเมฆบางส่วน'; }
+      else if(code >= 45 && code <= 48) { icon = '🌫️'; desc = 'มีหมอก'; }
+      else if(code >= 51 && code <= 67) { icon = '🌧️'; desc = 'มีฝนตกเบาๆ'; }
+      else if(code >= 80 && code <= 82) { icon = '⛈️'; desc = 'ฝนฟ้าคะนอง'; }
+      else if(code >= 95) { icon = '🌩️'; desc = 'พายุฝนฟ้าคะนอง'; }
+      
+      document.getElementById('weatherIcon').textContent = icon;
+      document.getElementById('weatherDesc').textContent = desc;
+    }
+  } catch (err) {
+    console.log('ไม่สามารถดึงข้อมูลสภาพอากาศได้:', err);
+  }
+}
+
+// ---------- นาฬิกาเวลาจริง (อัปเดตทุกวินาที) ----------
+function updateClock() {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('th-TH', {
+    timeZone: 'Asia/Bangkok',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+  const clockEl = document.getElementById('weatherClock');
+  if(clockEl) clockEl.textContent = `🕒 ${timeStr} น.`;
+}
+
+// เรียกดึงข้อมูลสภาพอากาศเมื่อโหลดหน้าเว็บ และรีเฟรชทุก 10 นาที
+fetchWeather();
+setInterval(fetchWeather, 10 * 60 * 1000);
+
+// เริ่มนาฬิกาแบบเรียลไทม์ ทำงานทุก 1 วินาที
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
